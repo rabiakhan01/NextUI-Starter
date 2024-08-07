@@ -72,3 +72,49 @@
               }
             />
           </div>
+
+//select 
+
+<div className='m-4'>
+          <Select
+            endContent={isSelected && <Close onClick={handelCross} sx={{ color: 'green' }} />}
+            isOpen={isSelectOpen}
+            onSelectionChange={handelSelectItem}
+            color= "white"
+            className={{
+              base: "border-1 border-grayColor !bg-white !rounded-md",
+              trigger: "border-1 border-grayColor !bg-white !rounded-md"
+            }}
+            onClick={handelClick}
+          >
+            {
+
+              animals.map((animal) => (
+                <SelectItem
+                  key={animal.key}
+                  textValue={value}
+                  selectedIcon={isSelected ? false : true}
+                >
+                  {animal.label}
+                </SelectItem>
+              ))
+            }
+          </Select>
+        </div>
+const handelClick = (event) => {
+    setIsSelectOpen(!isSelectOpen)
+  }
+  const handelSelectItem = (event) => {
+    setValue(event.currentKey)
+    setIsSelectOpen(false)
+    setIsSelected(true)
+  }
+  const handelCross = (event) => {
+    event.stopPropagation()
+    setIsSelectOpen(false)
+    setValue(" ")
+    setIsSelected(false)
+  }
+    const [value, setValue] = useState('');
+      
+      
