@@ -1,17 +1,18 @@
-import { AccordionItem } from "@nextui-org/react";
+import { AccordionItem } from "@nextui-org/react"
 
-const AccordItem = ({ classNames, onClick, ariaLabel, startContent, content }) => {
+const CustomeAccordionItem = ({ key, title, classNames, content, textValue, indicator, onPress }) => {
     return (
         <AccordionItem
-            startContent={startContent}
+            key={key}
+            title={title}
             classNames={classNames}
-            onClick={onClick}
-            aria-label={ariaLabel}
+            textValue={textValue}
+            indicator={indicator}
+            onPress={onPress}
         >
-            <hr></hr>
-            <p className='p-4'>{content}</p>
+            <hr />
+            {content}
         </AccordionItem>
     )
 }
-
-export default AccordItem;
+export default CustomeAccordionItem;

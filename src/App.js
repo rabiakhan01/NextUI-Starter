@@ -1,14 +1,16 @@
-import { Accordion, AccordionItem, NextUIProvider } from '@nextui-org/react';
+import { NextUIProvider } from '@nextui-org/react';
 import ToggleSwitch from './components/shared/ToggleSwitch';
 import { useState } from 'react';
 import { IndicatorIcon, SearchIcon } from './assets/images/images';
 import SearchBar from './components/shared/SearchBar';
+import CustomeAccordion, { CustomeAccordionItem } from './components/shared/Accordion';
+// import CustomeAccordionItem from './components/shared/AccordionItem';
 function App() {
   const [isSelected, setIsSelected] = useState(false);
   const [search, setSearch] = useState('');
 
-  const [selectedKeys, setSelectedKeys] = useState(new Set([0]));
-  // console.log("🚀 ~ App ~ isOpen:", isOpen)
+  const [selectedKeys, setSelectedKeys] = useState(new Set(["1"]));
+
   const handelOnValueChange = (value) => {
     setIsSelected(value)
   }
@@ -24,13 +26,7 @@ function App() {
     }
   }
 
-  const handelAccordion = () => {
-    let classname;
-    classname = document.getElementById('startContent');
-    console.log("🚀 ~ handelAccordion ~ classname:", classname)
-    // if (boolVal)
-    //   classname.classList.add('rotate-180')
-  }
+
   return (
     <NextUIProvider>
       <div className='h-lvh w-full flex flex-col'>
@@ -52,101 +48,45 @@ function App() {
         */}
         {/* accordian component */}
         <div className='m-4'>
-          <Accordion variant="splitted"
-            className='!flex !gap-2'
-            motionProps={{
-              variants: {
-                enter: {
-                  y: 0,
-                  opacity: 1,
-                  height: "auto",
-                  transition: {
-                    height: {
-                      duration: 0.5,
-                    },
-                    opacity: {
-                      easings: "ease",
-                      duration: 2.5,
-                    },
-                  },
-                },
-                exit: {
-                  y: -10,
-                  opacity: 0,
-                  height: 0,
-                  transition: {
-                    height: {
-                      easings: "ease",
-                      duration: 0.4,
-                    },
-                    opacity: {
-                      easings: "ease",
-                      duration: 0.2,
-                    },
-                  },
-                },
-              },
+
+          <CustomeAccordionItem
+            key={1}
+            title={<div className='flex justify-between'>
+              <div>
+                <p className="text-base">3162 Priwinkle Street</p>
+                <p className="text-xs text-zinc-300">4205 Delaney Lock, Fort Litzy 35188</p>
+              </div>
+              <div className="flex gap-7 items-center">
+                <div className="flex gap-7">
+                  <p className="text-base text-zinc-400">Single Family Home</p>
+                  <p className="text-base text-zinc-400">1 Unit</p>
+                </div>
+                <div className="flex gap-2">
+                  <span className="flex py-1 px-4 border-1 border-blue-700 rounded-md text-blue-700" onClick={(event) => {
+                    event.stopPropagation()
+                    console.log("child event", event)
+                  }}>Details</span>
+                  <span className="flex py-1 px-4 border-1 border-blue-700 rounded-md text-blue-700">Performance</span>
+                </div>
+              </div>
+            </div>}
+            classNames={{
+              title: "!pl-4",
+              base: "!rounded-lg !relative !shadow-none !border-1 !border-grayColor !p-0 group-data-[pressed=true]:!border-4 ",
+              heading: "!px-4",
+              indicator: "!rotate-0 data-[open=true]:!-rotate-180 !absolute",
             }}
-          >
-            <AccordionItem
-              key="1"
-              title={<div className='flex justify-between'>
-                <p>Accordion 1</p>
-                <span className='bg-red-400 rounded-md p-1' onClick={(event) => { event.stopPropagation() }}>Press Me</span>
-              </div>}
-              classNames={{
-                title: "!pl-6",
-                base: "!rounded-md !relative !shadow-none !border-1 !border-grayColor !p-0 group-data-[pressed=true]:!border-4 ",
-                heading: "!px-4",
-                indicator: "!rotate-90 data-[open=true]:!-rotate-90 !absolute",
-              }}
-              onPress={handelAccordion}
-            >
-              <hr></hr>
-              <p className='p-4'>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-                a mauris ligula. Ut viverra hendrerit tellus, eget malesuada
-                metus tempor quis. Pellentesque non nisi non diam feugiat placerat
-                faucibus nec tortor. Vestibulum vitae felis nec nisi pellentesque
-                pharetra. Curabitur tincidunt velit lectus, in egestas quam pharetra vitae.
-                Curabitur hendrerit, sem a sollicitudin euismod, risus quam mollis felis,
-                a hendrerit felis magna et neque. Duis accumsan sapien magna. Nam nec lacus nunc
-                Nunc accumsan ultrices eros, id tempus sapien. Morbi tincidunt dolor sed augue
-                volutpat gravida. Pellentesque ut accumsan tortor, iaculis porta tellus. Maecenas
-                rutrum iaculis massa, quis efficitur tellus convallis ut. Etiam fringilla leo lorem,
-                id ultrices risus euismod a
-              </p>
-            </AccordionItem>
-            <AccordionItem
-              key="2"
-              title={<div className='flex justify-between'>
-                <p>Accordion 2</p>
-                <span className='bg-red-400 rounded-md p-1' onClick={(event) => { event.stopPropagation() }}>Press Me</span>
-              </div>}
-              classNames={{
-                title: "!pl-6",
-                base: "!rounded-md !relative !shadow-none !border-1 !border-grayColor !p-0 !bg-white",
-                heading: "!px-4",
-                indicator: "!rotate-90 data-[open=true]:!-rotate-90 !absolute",
-              }}
-              onPress={handelAccordion}
-            >
-              <hr></hr>
-              <p className='p-4'>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-                a mauris ligula. Ut viverra hendrerit tellus, eget malesuada
-                metus tempor quis. Pellentesque non nisi non diam feugiat placerat
-                faucibus nec tortor. Vestibulum vitae felis nec nisi pellentesque
-                pharetra. Curabitur tincidunt velit lectus, in egestas quam pharetra vitae.
-                Curabitur hendrerit, sem a sollicitudin euismod, risus quam mollis felis,
-                a hendrerit felis magna et neque. Duis accumsan sapien magna. Nam nec lacus nunc
-                Nunc accumsan ultrices eros, id tempus sapien. Morbi tincidunt dolor sed augue
-                volutpat gravida. Pellentesque ut accumsan tortor, iaculis porta tellus. Maecenas
-                rutrum iaculis massa, quis efficitur tellus convallis ut. Etiam fringilla leo lorem,
-                id ultrices risus euismod a
-              </p>
-            </AccordionItem>
-          </Accordion>
+            textValue='Accordion 1'
+            indicator={<IndicatorIcon />}
+            onPress={(event) => { console.log("parent event: ", event) }}
+            content={<div>
+              <div>
+                <p>Units</p>
+                <p>3162 Priwinkle Street</p>
+              </div>
+              <div></div>
+            </div>}
+          />
         </div>
         {/*toggle switch 
         <div className='flex m-4'>
