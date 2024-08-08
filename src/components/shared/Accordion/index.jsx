@@ -1,110 +1,51 @@
-import { Accordion, AccordionItem } from "@nextui-org/react";
-import { IndicatorIcon } from "../../../assets/images/images";
-import { useState } from "react";
+import { createContext, useContext, useRef, useEffect, useState } from "react"
+import { IndicatorIcon } from "../../../assets/images/images"
 
+const AccordionContext = createContext()
 
-const SpecialAccordion = () => {
+export default function Accordion({ children, value, onChange, ...props }) {
+    const [selected, setSelected] = useState(value)
+
+    useEffect(() => {
+        onChange?.(selected)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selected])
+
     return (
-        <AccordionItem
-            key="1"
-            title="t">
-            <hr />
-            123456
-        </AccordionItem>
+        <ul {...props}>
+            <AccordionContext.Provider value={{ selected, setSelected }}>
+                {children}
+            </AccordionContext.Provider>
+        </ul>
     )
 }
 
-export const CustomeAccordionItem = ({ key, title, classNames, content, textValue, indicator, onPress }) => {
+export function AccordionItem({ children, value, trigger, ...props }) {
+    const { selected, setSelected } = useContext(AccordionContext)
+    const open = selected === value
+
+    const ref = useRef(null)
+
     return (
-        <Accordion variant="splitted"
-            // selectedKeys={selectedKeys}
-            // onSelectionChange={setSelectedKeys}
-            motionProps={{
-                variants: {
-                    enter: {
-                        y: 0,
-                        opacity: 1,
-                        height: "auto",
-                        transition: {
-                            height: {
-                                duration: 0.5,
-                            },
-                            opacity: {
-                                easings: "ease",
-                                duration: 2.5,
-                            },
-                        },
-                    },
-                    exit: {
-                        y: -10,
-                        opacity: 0,
-                        height: 0,
-                        transition: {
-                            height: {
-                                easings: "ease",
-                                duration: 0.4,
-                            },
-                            opacity: {
-                                easings: "ease",
-                                duration: 0.2,
-                            },
-                        },
-                    },
-                },
-            }}
-        >
-            <AccordionItem
-                key="1"
-                title="t">
-                <hr />
-                {content}
-            </AccordionItem>
-        </Accordion>
+        <li className="border rounded-lg bg-white mb-2" {...props}>
+            <header
+                role="button"
+                onClick={() => setSelected(open ? null : value)}
+                className="flex items-center sm:gap-2 gap-1 sm:p-4 p-2"
+            >
+                <IndicatorIcon
+                    className={`transition-transform self-start h-10 ${open ? "rotate-180" : ""}`}
+                />
+                {trigger}
+            </header>
+            <div
+                className={`overflow-y-hidden transition-all duration-500 ${open ? "border-t" : "border-none"}`}
+                style={{ height: open ? ref.current?.offsetHeight || 0 : 0 }}
+            >
+                <div className="pt-2 p-4" ref={ref} onClick={() => setSelected(open ? null : value)}>
+                    {children}
+                </div>
+            </div>
+        </li>
     )
 }
-
-const CustomeAccordion = ({ selectedKeys, setSelectedKeys, children }) => {
-    return (
-        <Accordion variant="splitted"
-            selectedKeys={selectedKeys}
-            onSelectionChange={setSelectedKeys}
-            motionProps={{
-                variants: {
-                    enter: {
-                        y: 0,
-                        opacity: 1,
-                        height: "auto",
-                        transition: {
-                            height: {
-                                duration: 0.5,
-                            },
-                            opacity: {
-                                easings: "ease",
-                                duration: 2.5,
-                            },
-                        },
-                    },
-                    exit: {
-                        y: -10,
-                        opacity: 0,
-                        height: 0,
-                        transition: {
-                            height: {
-                                easings: "ease",
-                                duration: 0.4,
-                            },
-                            opacity: {
-                                easings: "ease",
-                                duration: 0.2,
-                            },
-                        },
-                    },
-                },
-            }}
-        >
-            {children}
-        </Accordion>
-    )
-}
-
-export default CustomeAccordion;

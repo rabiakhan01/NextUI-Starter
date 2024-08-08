@@ -1,10 +1,6 @@
 import { NextUIProvider } from '@nextui-org/react';
-import ToggleSwitch from './components/shared/ToggleSwitch';
 import { useState } from 'react';
-import { IndicatorIcon, SearchIcon } from './assets/images/images';
-import SearchBar from './components/shared/SearchBar';
-import CustomeAccordion, { CustomeAccordionItem } from './components/shared/Accordion';
-// import CustomeAccordionItem from './components/shared/AccordionItem';
+import Accordion, { AccordionItem } from './components/shared/Accordion'
 function App() {
   const [isSelected, setIsSelected] = useState(false);
   const [search, setSearch] = useState('');
@@ -48,45 +44,33 @@ function App() {
         */}
         {/* accordian component */}
         <div className='m-4'>
+          <Accordion>
+            <AccordionItem value={"1"} trigger={
+              <div className='w-full'>
 
-          <CustomeAccordionItem
-            key={1}
-            title={<div className='flex justify-between'>
-              <div>
-                <p className="text-base">3162 Priwinkle Street</p>
-                <p className="text-xs text-zinc-300">4205 Delaney Lock, Fort Litzy 35188</p>
-              </div>
-              <div className="flex gap-7 items-center">
-                <div className="flex gap-7">
-                  <p className="text-base text-zinc-400">Single Family Home</p>
-                  <p className="text-base text-zinc-400">1 Unit</p>
+                <div className='flex gap-2 items-center justify-between'>
+                  <div>
+                  </div>
+                  <div>Description</div>
                 </div>
-                <div className="flex gap-2">
-                  <span className="flex py-1 px-4 border-1 border-blue-700 rounded-md text-blue-700" onClick={(event) => {
-                    event.stopPropagation()
-                    console.log("child event", event)
-                  }}>Details</span>
-                  <span className="flex py-1 px-4 border-1 border-blue-700 rounded-md text-blue-700">Performance</span>
+
+              </div>}
+            >
+              <div>lorem  ipsum dolor sit amet</div>
+            </AccordionItem>
+            <AccordionItem value={"2"} trigger={
+              <div className='w-full'>
+
+                <div className='flex gap-2 items-center justify-between'>
+                  <div> Property 1</div>
+                  <div>Description</div>
                 </div>
-              </div>
-            </div>}
-            classNames={{
-              title: "!pl-4",
-              base: "!rounded-lg !relative !shadow-none !border-1 !border-grayColor !p-0 group-data-[pressed=true]:!border-4 ",
-              heading: "!px-4",
-              indicator: "!rotate-0 data-[open=true]:!-rotate-180 !absolute",
-            }}
-            textValue='Accordion 1'
-            indicator={<IndicatorIcon />}
-            onPress={(event) => { console.log("parent event: ", event) }}
-            content={<div>
-              <div>
-                <p>Units</p>
-                <p>3162 Priwinkle Street</p>
-              </div>
-              <div></div>
-            </div>}
-          />
+
+              </div>}
+            >
+              <div>lorem  ipsum dolor sit amet</div>
+            </AccordionItem>
+          </Accordion>
         </div>
         {/*toggle switch 
         <div className='flex m-4'>
@@ -107,7 +91,7 @@ function App() {
         </div>
         */}
       </div>
-    </NextUIProvider >
+    </NextUIProvider>
   );
 }
 
