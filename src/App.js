@@ -1,32 +1,38 @@
 import { NextUIProvider } from '@nextui-org/react';
-import { useState } from 'react';
 import Accordion, { AccordionItem } from './components/shared/Accordion'
+import { createContext, useState } from 'react';
+import { propertyData } from './utils/styles/mockupData/data';
+export const AccordionContext = createContext()
+
 function App() {
-  const [isSelected, setIsSelected] = useState(false);
-  const [search, setSearch] = useState('');
+  const [selected, setSelected] = useState();
+  console.log("🚀 ~ App ~ selected:", selected)
 
-  const [selectedKeys, setSelectedKeys] = useState(new Set(["1"]));
 
-  const handelOnValueChange = (value) => {
-    setIsSelected(value)
-  }
+  // const [isSelected, setIsSelected] = useState(false);
+  // const [search, setSearch] = useState('');
+  // const [selectedKeys, setSelectedKeys] = useState(new Set(["1"]));
+  // const handelOnValueChange = (value) => {
+  //   setIsSelected(value)
+  // }
 
-  const handelSearchOnChange = (event) => {
-    // console.log("🚀 ~ handelSearchOnChange ~ event:", event)
-    setSearch(event)
-  }
+  // const handelSearchOnChange = (event) => {
+  //   // console.log("🚀 ~ handelSearchOnChange ~ event:", event)
+  //   setSearch(event)
+  // }
 
-  const handelSearchClick = (event) => {
-    if (event.keyCode === 13 && search?.length) {
-      console.log("search:", search)
-    }
-  }
+  // const handelSearchClick = (event) => {
+  //   if (event.keyCode === 13 && search?.length) {
+  //     console.log("search:", search)
+  //   }
+  // }
 
 
   return (
-    <NextUIProvider>
-      <div className='h-lvh w-full flex flex-col'>
-        {/*search component 
+    <AccordionContext.Provider value={{ selected, setSelected }}>
+      <NextUIProvider>
+        <div className='h-lvh w-full flex flex-col'>
+          {/*search component 
         <div className='m-4'>
           <SearchBar
             value={search}
@@ -42,37 +48,28 @@ function App() {
           />
         </div>
         */}
-        {/* accordian component */}
-        <div className='m-4'>
-          <Accordion>
-            <AccordionItem value={"1"} trigger={
-              <div className='w-full'>
-
-                <div className='flex gap-2 items-center justify-between'>
-                  <div>
-                  </div>
-                  <div>Description</div>
-                </div>
-
-              </div>}
-            >
-              <div>lorem  ipsum dolor sit amet</div>
-            </AccordionItem>
-            <AccordionItem value={"2"} trigger={
-              <div className='w-full'>
-
-                <div className='flex gap-2 items-center justify-between'>
-                  <div> Property 1</div>
-                  <div>Description</div>
-                </div>
-
-              </div>}
-            >
-              <div>lorem  ipsum dolor sit amet</div>
-            </AccordionItem>
-          </Accordion>
-        </div>
-        {/*toggle switch 
+          {/* accordian component */}
+          <div className='m-4'>
+            <Accordion>
+              {
+                propertyData?.map((property, index) => {
+                  return (
+                    <AccordionItem
+                      value={index + 1}
+                      key={property.key}
+                      title={property.title}
+                      subtitle={property.subtitle}
+                      desc={property.desc}
+                      units={property.units}
+                      propertyFinancials={property.propertyFinancials}
+                    >
+                    </AccordionItem>
+                  )
+                })
+              }
+            </Accordion>
+          </div>
+          {/*toggle switch 
         <div className='flex m-4'>
           <ToggleSwitch
             startContent={<p>yes</p>}
@@ -90,8 +87,10 @@ function App() {
           />
         </div>
         */}
-      </div>
-    </NextUIProvider>
+        </div>
+      </NextUIProvider>
+    </AccordionContext.Provider>
+
   );
 }
 
