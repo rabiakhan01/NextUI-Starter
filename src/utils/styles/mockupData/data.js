@@ -5,27 +5,26 @@ export const propertyData = [
         subtitle: "4202 Pelaney Lock, Forty Litzy 35153",
         desc: "Single Family Home",
         units: 1,
-        propertyFinancials: [
+        propertFinancial: [
             {
-                name: "Market value",
-                value: "100,00"
+                heading: 'Market Value',
+                price: '10,000',
             },
             {
-                name: "Appreciation",
-                value: "100,00"
+                heading: 'Purchase Price',
+                price: '10,000'
             },
             {
-                name: "Gross Operating Incom",
-                value: "100,00"
+                heading: 'Appreciation',
+                price: '10,000'
             },
             {
-                name: "Purchase Price",
-                value: "-"
-            },
-            {
-                name: "Net Operating Income",
-                value: "-"
-            },
+                heading: 'Mortage Balance',
+                price: '-'
+            }, {
+                heading: 'Home Equity',
+                price: '-'
+            }
         ]
 
     },
@@ -35,51 +34,26 @@ export const propertyData = [
         subtitle: "7865 Delaney Locking, Fortiz Litzy 35188",
         desc: "Duplex Aprtment",
         units: 1,
-        propertyFinancials: [
+        propertFinancial: [
             {
-                name: "Market value",
-                value: "100,00"
+                heading: 'Market Value',
+                price: '10,000',
             },
             {
-                name: "Appreciation",
-                value: "100,00"
+                heading: 'Purchase Price',
+                price: '10,000'
             },
             {
-                name: "Gross Operating Incom",
-                value: "100,00"
+                heading: 'Appreciation',
+                price: '10,000'
             },
             {
-                name: "Purchase Price",
-                value: "-"
-            },
-            {
-                name: "Net Operating Income",
-                value: "-"
-            },
-            {
-                name: "Purchase Price",
-                value: "-"
-            },
-            {
-                name: "Net Operating Income",
-                value: "-"
-            },
-            {
-                name: "Purchase Price",
-                value: "-"
-            },
-            {
-                name: "Net Operating Income",
-                value: "-"
-            },
-            {
-                name: "Purchase Price",
-                value: "-"
-            },
-            {
-                name: "Net Operating Income",
-                value: "-"
-            },
+                heading: 'Mortage Balance',
+                price: '-'
+            }, {
+                heading: 'Home Equity',
+                price: '-'
+            }
         ]
 
     },
@@ -89,27 +63,26 @@ export const propertyData = [
         subtitle: "4205 Delaney Lock, Fort Litzy 35188",
         desc: "Single Family Home",
         units: 1,
-        propertyFinancials: [
+        propertFinancial: [
             {
-                name: "Market value",
-                value: "100,00"
+                heading: 'Market Value',
+                price: '10,000',
             },
             {
-                name: "Appreciation",
-                value: "100,00"
+                heading: 'Purchase Price',
+                price: '10,000'
             },
             {
-                name: "Gross Operating Incom",
-                value: "100,00"
+                heading: 'Appreciation',
+                price: '10,000'
             },
             {
-                name: "Purchase Price",
-                value: "-"
-            },
-            {
-                name: "Net Operating Income",
-                value: "-"
-            },
+                heading: 'Mortage Balance',
+                price: '-'
+            }, {
+                heading: 'Home Equity',
+                price: '-'
+            }
         ]
 
     },
@@ -119,27 +92,26 @@ export const propertyData = [
         subtitle: "475 Delaney Lalin, Fort Litzy 54288",
         desc: "Family Apartment",
         units: 1,
-        propertyFinancials: [
+        propertFinancial: [
             {
-                name: "Market value",
-                value: "100,00"
+                heading: 'Market Value',
+                price: '10,000',
             },
             {
-                name: "Appreciation",
-                value: "100,00"
+                heading: 'Purchase Price',
+                price: '10,000'
             },
             {
-                name: "Gross Operating Incom",
-                value: "100,00"
+                heading: 'Appreciation',
+                price: '10,000'
             },
             {
-                name: "Purchase Price",
-                value: "-"
-            },
-            {
-                name: "Net Operating Income",
-                value: "-"
-            },
+                heading: 'Mortage Balance',
+                price: '-'
+            }, {
+                heading: 'Home Equity',
+                price: '-'
+            }
         ]
 
     },
@@ -149,27 +121,26 @@ export const propertyData = [
         subtitle: "4205 Delaney Lock, Fort Litzy 35188",
         desc: "Duplex",
         units: 2,
-        propertyFinancials: [
+        propertFinancial: [
             {
-                name: "Market value",
-                value: "100,00"
+                heading: 'Market Value',
+                price: '10,000',
             },
             {
-                name: "Appreciation",
-                value: "100,00"
+                heading: 'Purchase Price',
+                price: '10,000'
             },
             {
-                name: "Gross Operating Incom",
-                value: "100,00"
+                heading: 'Appreciation',
+                price: '10,000'
             },
             {
-                name: "Purchase Price",
-                value: "-"
-            },
-            {
-                name: "Net Operating Income",
-                value: "-"
-            },
+                heading: 'Mortage Balance',
+                price: '-'
+            }, {
+                heading: 'Home Equity',
+                price: '-'
+            }
         ]
 
     },

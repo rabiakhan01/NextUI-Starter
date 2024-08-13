@@ -2,6 +2,8 @@ import { NextUIProvider } from '@nextui-org/react';
 import Accordion, { AccordionItem } from './components/shared/Accordion'
 import { createContext, useState } from 'react';
 import { propertyData } from './utils/styles/mockupData/data';
+import Header from './components/shared/Accordion/PropertyAccordion/Header';
+import Content from './components/shared/Accordion/PropertyAccordion/Content';
 export const AccordionContext = createContext()
 
 function App() {
@@ -56,13 +58,19 @@ function App() {
                   return (
                     <AccordionItem
                       value={index + 1}
-                      key={property.key}
-                      title={property.title}
-                      subtitle={property.subtitle}
-                      desc={property.desc}
-                      units={property.units}
-                      propertyFinancials={property.propertyFinancials}
+                      trigger={
+                        <Header
+                          title={property.title}
+                          subtitle={property.subtitle}
+                          desc={property.desc}
+                          units={property.units}
+                        />
+                      }
                     >
+                      <Content
+                        propertyFinancials={property.propertFinancial}
+                        unitName={property.title}
+                      />
                     </AccordionItem>
                   )
                 })
