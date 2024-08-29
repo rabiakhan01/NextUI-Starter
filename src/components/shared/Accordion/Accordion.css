@@ -1,0 +1,15 @@
+.grid-container {
+  display: grid;
+  background-color: blue;
+}
+
+.content {
+  background: aqua;
+  height: 0;
+  overflow: hidden;
+  transition:  ease-out 1s;
+}
+
+span:active + .grid-container .content {
+  height: 100%;
+}

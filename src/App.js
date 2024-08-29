@@ -1,107 +1,84 @@
-import { NextUIProvider } from '@nextui-org/react';
-import ToggleSwitch from './components/shared/ToggleSwitch';
-import { useState } from 'react';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import LightModeIcon from '@mui/icons-material/LightMode';
+import { useEffect, useRef, useState } from 'react';
+
+
 function App() {
-  const [isSelected, setIsSelected] = useState(true);
-  const handelOnValueChange = (value) => {
-    setIsSelected(value)
-  }
+
+  const [isRecording, setIsRecording] = useState(false);
+  const [audioUrl, setAudioUrl] = useState(null);
+  const mediaRecorderRef = useRef(null);
+  const audioChunksRef = useRef([]);
+  const streamRef = useRef(null); // Reference to the media stream
+
+  useEffect(() => {
+    // Cleanup function to stop recording and release resources
+    return () => {
+      if (mediaRecorderRef.current) {
+        mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, []);
+
+  const handleStartRecording = async () => {
+    try {
+      // Request access to the microphone
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      streamRef.current = stream; // Store the stream reference
+
+      // Create a new MediaRecorder instance
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+
+      // Start recording
+      mediaRecorder.start();
+      setIsRecording(true);
+
+      // Collect audio data
+      mediaRecorder.ondataavailable = (event) => {
+        audioChunksRef.current.push(event.data);
+      };
+
+      // Handle the end of the recording
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/mp3' });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        setAudioUrl(audioUrl);
+        audioChunksRef.current = [];
+      };
+    } catch (err) {
+      console.error("Error accessing the microphone:", err);
+    }
+  };
+
+  const handleStopRecording = () => {
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+
+      // Stop all tracks of the media stream
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+        streamRef.current = null; // Clear the stream reference
+      }
+    }
+  };
+
   return (
-    <NextUIProvider>
-      <div className='h-lvh w-full flex justify-center items-center'>
-        <ToggleSwitch
-          startContent={<p>yes</p>}
-          endContent={<p>no</p>}
-          size=""
-          selected={isSelected}
-          className={
-            {
-              wrapper: "group-data-[selected]:pl-5 h-[34px] w-[65px] !bg-grayColor group-data-[selected]:!bg-greenColor !uppercase",
-              startContent: "!text-[20px] text-white",
-              endContent: "!text-[20px] !text-white",
-            }
-          }
-          onValueChange={handelOnValueChange}
-        />
-        <ToggleSwitch
-          startContent={<p>yes</p>}
-          endContent={<p>no</p>}
-          size=""
-          selected={isSelected}
-          color='success'
-          className={
-            {
-              wrapper: "group-data-[selected]:pl-5 h-[34px] w-[65px] !uppercase",
-              startContent: "!text-[20px] text-white",
-              endContent: "!text-[20px] !text-white",
-            }
-          }
-          onValueChange={handelOnValueChange}
-          thumbIcon={isSelected
-            ?
-            <LightModeIcon sx={{
-              width: '10px',
-              height: '10px'
-            }} />
-            :
-            <DarkModeIcon sx={{
-              width: '10px',
-              height: '10px'
-            }} />}
-        />
+    <div className='w-full h-lvh flex justify-center items-center'>
+      <div className='flex flex-col gap-4'>
+        <button className='bg-lime-400 p-2 rounded' onClick={isRecording ? handleStopRecording : handleStartRecording}>
+          {isRecording ? 'Stop Recording' : 'Start Recording'}
+        </button>
 
-        <ToggleSwitch
-          startContent={<LightModeIcon />}
-          endContent={<DarkModeIcon />}
-          size="xl"
-          color='warning'
-          className={
-            {
-              wrapper: "group-data-[selected]:pl-5 h-[34px] w-[65px] !uppercase",
-              startContent: "!text-[20px] text-white",
-              endContent: "!text-[20px] !text-white",
-            }
-          }
-        />
-
-        <div className={`h-16 w-64 flex justify-end rounded-xl border-2 border-lime-200 ${isSelected ? 'bg-white' : 'bg-zinc-700'}`}>
-          <ToggleSwitch
-            startContent={<LightModeIcon />}
-            endContent={<DarkModeIcon />}
-            selected={isSelected}
-            onValueChange={handelOnValueChange}
-            color='secondary'
-            className={
-              {
-                wrapper: "group-data-[selected]:pl-2 h-[34px] w-[55px] !uppercase",
-                startContent: "!text-[20px]",
-                endContent: "!text-[20px]",
-              }
-            }
-          />
-        </div>
-        <div className={`h-16 w-64 flex justify-end rounded-xl border-2 border-lime-200 ml-2 ${isSelected ? 'bg-white' : 'bg-zinc-700'}`}>
-          <ToggleSwitch
-            startContent={<LightModeIcon />}
-            endContent={<DarkModeIcon />}
-            selected={isSelected}
-            onValueChange={handelOnValueChange}
-            color='warning'
-            className={
-              {
-                wrapper: "h-[34px] w-[34px] rounded-lg ",
-                startContent: " text-white",
-                thumb: "hidden",
-                endContent: " text-black",
-              }
-            }
-          />
-        </div>
+        {audioUrl && (
+          <div>
+            <p>Recorded Audio:</p>
+            <audio controls src={audioUrl} />
+          </div>
+        )}
       </div>
-    </NextUIProvider>
-  );
+      <div>this is date-picker</div>
+    </div>
+  )
 }
 
 export default App;
