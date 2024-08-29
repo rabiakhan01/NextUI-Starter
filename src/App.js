@@ -1,105 +1,83 @@
-import { NextUIProvider } from '@nextui-org/react';
-import Accordion, { AccordionItem } from './components/shared/Accordion'
-import { createContext, useState } from 'react';
-import { propertyData } from './utils/styles/mockupData/data';
-import Header from './components/shared/Accordion/PropertyAccordion/Header';
-import Content from './components/shared/Accordion/PropertyAccordion/Content';
-export const AccordionContext = createContext()
+import { useEffect, useRef, useState } from 'react';
+
 
 function App() {
-  const [selected, setSelected] = useState();
-  console.log("🚀 ~ App ~ selected:", selected)
 
+  const [isRecording, setIsRecording] = useState(false);
+  const [audioUrl, setAudioUrl] = useState(null);
+  const mediaRecorderRef = useRef(null);
+  const audioChunksRef = useRef([]);
+  const streamRef = useRef(null); // Reference to the media stream
 
-  // const [isSelected, setIsSelected] = useState(false);
-  // const [search, setSearch] = useState('');
-  // const [selectedKeys, setSelectedKeys] = useState(new Set(["1"]));
-  // const handelOnValueChange = (value) => {
-  //   setIsSelected(value)
-  // }
+  useEffect(() => {
+    // Cleanup function to stop recording and release resources
+    return () => {
+      if (mediaRecorderRef.current) {
+        mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, []);
 
-  // const handelSearchOnChange = (event) => {
-  //   // console.log("🚀 ~ handelSearchOnChange ~ event:", event)
-  //   setSearch(event)
-  // }
+  const handleStartRecording = async () => {
+    try {
+      // Request access to the microphone
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      streamRef.current = stream; // Store the stream reference
 
-  // const handelSearchClick = (event) => {
-  //   if (event.keyCode === 13 && search?.length) {
-  //     console.log("search:", search)
-  //   }
-  // }
+      // Create a new MediaRecorder instance
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
 
+      // Start recording
+      mediaRecorder.start();
+      setIsRecording(true);
+
+      // Collect audio data
+      mediaRecorder.ondataavailable = (event) => {
+        audioChunksRef.current.push(event.data);
+      };
+
+      // Handle the end of the recording
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/mp3' });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        setAudioUrl(audioUrl);
+        audioChunksRef.current = [];
+      };
+    } catch (err) {
+      console.error("Error accessing the microphone:", err);
+    }
+  };
+
+  const handleStopRecording = () => {
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+
+      // Stop all tracks of the media stream
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+        streamRef.current = null; // Clear the stream reference
+      }
+    }
+  };
 
   return (
-    <AccordionContext.Provider value={{ selected, setSelected }}>
-      <NextUIProvider>
-        <div className='h-lvh w-full flex flex-col'>
-          {/*search component 
-        <div className='m-4'>
-          <SearchBar
-            value={search}
-            placeholder="Search"
-            startContent={<SearchIcon />}
-            onValueChange={handelSearchOnChange}
-            onKeyDown={handelSearchClick}
-            radius="sm"
-            className={{
-              input: "placeholder:text-grayColor placeholder:text-lg",
-              inputWrapper: "border-1 bg-white border-grayColor group-data-[hover=true]:bg-white group-data-[focus=true]:bg-white drop-shadow-none",
-            }}
-          />
-        </div>
-        */}
-          {/* accordian component */}
-          <div className='m-4'>
-            <Accordion>
-              {
-                propertyData?.map((property, index) => {
-                  return (
-                    <AccordionItem
-                      value={index + 1}
-                      trigger={
-                        <Header
-                          title={property.title}
-                          subtitle={property.subtitle}
-                          desc={property.desc}
-                          units={property.units}
-                        />
-                      }
-                    >
-                      <Content
-                        propertyFinancials={property.propertFinancial}
-                        unitName={property.title}
-                      />
-                    </AccordionItem>
-                  )
-                })
-              }
-            </Accordion>
-          </div>
-          {/*toggle switch 
-        <div className='flex m-4'>
-          <ToggleSwitch
-            startContent={<p>yes</p>}
-            // endContent={<p>no</p>}
-            selected={isSelected}
-            className={
-              {
-                wrapper: "group-data-[selected]:pl-[14px] h-[28px] w-[55px] !bg-grayColor group-data-[selected]:!bg-greenColor !uppercase",
-                startContent: "!text-[16px] text-white",
-                endContent: "!text-[16px] !text-white",
-                thumb: '!h-4 !w-4'
-              }
-            }
-            onValueChange={handelOnValueChange}
-          />
-        </div>
-        */}
-        </div>
-      </NextUIProvider>
-    </AccordionContext.Provider>
+    <div className='w-full h-lvh flex justify-center items-center'>
+      <div className='flex flex-col gap-4'>
+        <button className='bg-lime-400 p-2 rounded' onClick={isRecording ? handleStopRecording : handleStartRecording}>
+          {isRecording ? 'Stop Recording' : 'Start Recording'}
+        </button>
 
-  );
+        {audioUrl && (
+          <div>
+            <p>Recorded Audio:</p>
+            <audio controls src={audioUrl} />
+          </div>
+        )}
+      </div>
+    </div>
+  )
 }
 
 export default App;

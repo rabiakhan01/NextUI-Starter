@@ -1,0 +1,84 @@
+
+import { Calendar } from "@nextui-org/react";
+import { DateInput } from "@nextui-org/react";
+
+const DatePicker = ({ onChange, value, variant, endContent, size, label, showCalender, error, errorMsg }) => {
+
+    return (
+        <div className="relative h-full">
+            <DateInput
+                variant={variant}
+                endContent={endContent}
+                onChange={onChange}
+                value={value}
+                aria-label={'Purchase Date'}
+                size={size}
+                classNames={{
+                    base: "pt-[5px]",
+                    input: 'focus:!border-red-500',
+                    inputWrapper: `!border-1 !h-9 !rounded !shadow-none ${error ? 'border-error00' : 'border-secondary02'} hover:!border-primary00 `,
+                }}
+            />
+            <p className='text-error00 text-xs pl-1 absolute'>{error && errorMsg}</p>
+            {
+                showCalender ?
+                    <div className="absolute z-20 right-[1px] top-1">
+                        <Calendar
+                            value={value}
+                            onChange={onChange}
+                            showMonthAndYearPickers
+                            classNames={{
+                                prevButton: "absolute right-12",
+                                header: "!justify-start pl-2 w-auto bg-transparent",
+                                cellButton: "hover:!border-2 hover:border-blue-700 hover:!text-blue-700 hover:!bg-transparent focus:!bg-blue-700 focus:!text-white",
+                                gridHeaderRow: "!border-b-2",
+                                gridBody: "bg-white !text-sm",
+                                gridBodyRow: "!p-0"
+                            }}
+                        />
+                    </div>
+                    :
+                    null
+            }
+            {label ?
+                (<label htmlFor="email" className={`absolute -top-[6px] left-2 bg-white px-[2px] text-[12px] font-medium  select-none ${error ? 'text-error00' : 'text-text01'}`}>
+                    {label}
+                </label>)
+                : null}
+        </div>
+    );
+};
+
+export default DatePicker;
+
+ <DatePicker
+                                        size={'sm'}
+                                        variant={'bordered'}
+                                        endContent={<button onClick={handelShowCalender} className={`${showCalender ? 'rotate-0' : 'rotate-180'}`}><ArrowUpIcon /></button>}
+                                        label={'Purchase Date'}
+                                        value={date}
+                                        onChange={handelPurchaseDateChange}
+                                        error={false}
+                                        errorMsg={''}
+                                        showCalender={showCalender}
+                                    />
+  const handelPurchaseDateChange = (event) => {
+        let newDate = new CalendarDateTime(event.year, event.month, event.day, 0, 0, 0);
+        const parsedDate = new Date(financialInfoTab?.purchaseDate);
+        const date = `${String(parsedDate.getMonth()).length === 1 ? '0' + (parsedDate.getMonth() + 1) : parsedDate.getMonth() + 1}/${String(parsedDate.getDate()).length === 1 ? '0' + (parsedDate.getDate()) : parsedDate.getDate()}/${parsedDate.getFullYear()}`
+        setDate(date)
+        console.log("🚀 ~ handelPurchaseDateChange ~ date:", newDate.toString())
+        setAddPropertyData({
+            ...addPropertyData,
+            financialInfoTab: {
+                ...addPropertyData.financialInfoTab,
+                purchaseDate: newDate.toString()
+            }
+
+        })
+        setEmptyData({
+            ...emptyData,
+            purchaseDate: false
+        })
+        setShowCalender(false)
+    }
