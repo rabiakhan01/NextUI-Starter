@@ -79,6 +79,7 @@ function App() {
       <div>this is tmerge test</div>
       <div>this is date-picker</div>
       <div>this is second test</div>
+      <div>git git test test</div>
     </div>
   )
 }
